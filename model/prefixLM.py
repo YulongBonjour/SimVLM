@@ -46,7 +46,7 @@ class PrefixLM(nn.Module):
         self.img_pos_embed=nn.Embedding(self.img_tokens_len,d_model)
         self.txt_seq_len=txt_seq_len
         self.num_text_tokens=num_text_tokens
-        tgt_mask=subsequent_mask(self.txt_seq_len+1)#add <bos>
+        tgt_mask=subsequent_mask(self.txt_seq_len)
         self.register_buffer('tgt_mask', tgt_mask, persistent=False)
         self.transformer=Transformer(d_model,heads,enc_depth,dec_depth,d_ff,src_mask=None,tgt_mask=tgt_mask,dropout=dropout)
         self.to_logits = nn.Sequential(
