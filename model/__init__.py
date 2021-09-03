@@ -1,3 +1,3 @@
-from transformer import Transformer
-from tokenizer import ChineseTokenizer
-from prefixLM import PrefixLM
+from model.transformer import Transformer
+from model.tokenizer import ChineseTokenizer
+from model.prefixLM import PrefixLM
