@@ -57,6 +57,7 @@ class PrefixLM(nn.Module):
         device=txt.device
         img_emed=self.conv1(img)
         img_emed=self.resnet(img_emed)
+        img_emed=rearrange(img_emed,'b c h w -> b (h w) c')
         img_emed+=self.img_pos_embed(torch.arange(self.img_tokens_len,device=device))
         seg=torch.zeros(self.txt_seq_len,device=device)+self.num_text_tokens+1#<seg>
         end=torch.zeros(self.txt_seq_len,device=device)+self.num_text_tokens+2#<end>
