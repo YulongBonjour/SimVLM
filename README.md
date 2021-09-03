@@ -1,5 +1,6 @@
 # SimVLM
 SimVLM ---SIMPLE VISUAL LANGUAGE MODEL PRETRAINING WITH WEAK SUPERVISION
+https://arxiv.org/abs/2108.10904
 
 # datasets format
     for 'loader.py' ,we use lmdb datasets
