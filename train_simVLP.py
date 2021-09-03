@@ -184,7 +184,7 @@ def save_model(epoch,dir,fname=None):
     torch.save(save_obj, path)
 
 model.train()
-for epoch in range(args.num_epochs):
+for epoch in range(start_epoch,args.num_epochs):
     train_one_epoch(epoch,model,train_loader,train_sampler,optimizer,lr_scheduler,args.save_every_n_steps,rank)
 if rank == 0:
    if not os.path.exists(args.save_dir):
