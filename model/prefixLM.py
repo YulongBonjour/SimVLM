@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-import torch.functional as F
+import torch.nn.functional as F
 import copy
 from model.transformer import Transformer,subsequent_mask
 from random import randint
