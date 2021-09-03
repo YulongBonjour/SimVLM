@@ -12,7 +12,7 @@ parser.add_argument("--d_model", type=int, default=512,help='embedding dimmensio
 parser.add_argument('--heads', type=int, default=8,help='how many numbers of heads in MultiheadedAttention')
 parser.add_argument('--enc_depth', type=int, default=8,help='depth of encoder')
 parser.add_argument('--dec_depth', type=int, default=8,help='depth of decoder')
-parser.add_argument('--d_ff', type == int, default=1024,help='hidden dimension of feedforward net')
+parser.add_argument('--d_ff', type = int, default=1024,help='hidden dimension of feedforward net')
 parser.add_argument('--dropout', type=float, default=0.1)
 parser.add_argument('--batch_size', type=int, default=16)
 parser.add_argument('--local_rank', type=int, default=0)
