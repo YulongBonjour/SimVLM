@@ -1,7 +1,7 @@
 import torch
 import copy
 import torch.nn as nn
-import torch.nn .functional as F
+import torch.nn.functional as F
 import numpy as np
 import math
 #helpers
