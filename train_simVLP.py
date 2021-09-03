@@ -31,6 +31,9 @@ parser.add_argument('--save_dir', type=str, required=True)
 parser.add_argument('--save_every_n_steps', default=1000, type=int, help='Save a checkpoint every n steps')
 args = parser.parse_args()
 
+if not os.path.exists(args.checkpoint_dir):
+     os.makedirs(args.checkpoint_dir)
+
 def exists(val):
     return val is not None
 def synchronize():
