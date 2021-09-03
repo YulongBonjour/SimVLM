@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.functional as F
 import copy
-from transformer import Transformer,subsequent_mask
+from model.transformer import Transformer,subsequent_mask
 from random import randint
 from einops import rearrange
 def clone(module,N):
