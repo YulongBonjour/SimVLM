@@ -39,7 +39,7 @@ class PrefixLM(nn.Module):
         super(PrefixLM,self).__init__()
         assert input_resolution%patch_size==0
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=d_model, kernel_size=patch_size, stride=patch_size, bias=False)
-        self.resnet=nn.Sequential(clone(ResBlock(d_model),res_depth))
+        self.resnet=nn.Sequential(nn.ModuleList([ResBlock(d_model) for _ in range(res_depth)]))
         self.txt_embed=nn.Embedding(num_text_tokens+2,d_model)#<seg>和<eof>
         self.txt_pos_embed=nn.Embedding(txt_seq_len*2,d_model)#encoder和decoder中txt长度均为256
         self.img_tokens_len=(input_resolution // patch_size) ** 2
