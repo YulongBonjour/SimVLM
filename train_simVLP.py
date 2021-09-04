@@ -134,6 +134,8 @@ if not RESUME:
                         dropout=args.dropout)
 
 model=PrefixLM(**PrefixLM_configure)
+if RESUME:
+     model.load_state_dict(weights)
 model.cuda(args.local_rank)
 print('模型初始化完成')
 model= torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
