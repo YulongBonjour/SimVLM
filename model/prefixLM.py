@@ -45,7 +45,7 @@ class PrefixLM(nn.Module):
         self.img_tokens_len=(input_resolution // patch_size) ** 2
         self.img_pos_embed=nn.Embedding(self.img_tokens_len,d_model)
         self.txt_seq_len=txt_seq_len
-        self.num_text_tokens=num_text_tokens+2
+        self.num_text_tokens=num_text_tokens
         self.dim_embed=d_model
         self.input_resolution=input_resolution
         self.patch_size=patch_size
@@ -53,7 +53,7 @@ class PrefixLM(nn.Module):
         self.transformer=Transformer(d_model,heads,enc_depth,dec_depth,d_ff,dropout=dropout)
         self.to_logits = nn.Sequential(
             nn.LayerNorm(d_model),
-            nn.Linear(d_model, self.num_text_tokens),
+            nn.Linear(d_model, self.num_text_tokens+2),
         )
     def forward(self,img,txt,return_loss=False):
         device=txt.device
