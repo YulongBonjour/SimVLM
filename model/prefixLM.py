@@ -45,7 +45,7 @@ class PrefixLM(nn.Module):
         self.img_tokens_len=(input_resolution // patch_size) ** 2
         self.img_pos_embed=nn.Embedding(self.img_tokens_len,d_model)
         self.txt_seq_len=txt_seq_len
-        self.num_text_tokens=num_text_tokens
+        self.num_text_tokens=num_text_tokens+2
         self.dim_embed=d_model
         self.input_resolution=input_resolution
         self.patch_size=patch_size
@@ -83,7 +83,7 @@ class PrefixLM(nn.Module):
 
         prefix=torch.cat((img_emed,pre_txt_embed),dim=1)
         tgt_mask=subsequent_mask(self.txt_seq_len).to(device)
-        out=self.transformer(prefix,tgt_txt_embed,tgt_mask=subsequent_mask(self.txt_seq_len))
+        out=self.transformer(prefix,tgt_txt_embed,tgt_mask=tgt_mask)
         logits=self.to_logits(out)
         if not return_loss:
             return logits
