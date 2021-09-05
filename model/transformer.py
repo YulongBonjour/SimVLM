@@ -48,7 +48,7 @@ class Transformer(nn.Module):
                 nn.init.xavier_uniform_(p)
 
     def forward(self,src_embeded,tgt_embeded,src_mask=None,tgt_mask=None):
-        return  self.decode(self.encode(src_embeded),tgt_embeded)
+        return  self.decode(self.encode(src_embeded,src_mask),tgt_embeded,src_mask,tgt_mask)
     def encode(self,src_embeded,src_mask=None):
         return self.encoder(src_embeded,src_mask)
     def decode(self,memory,tgt_embeded,src_mask=None,tgt_mask=None):
