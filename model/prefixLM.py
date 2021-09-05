@@ -39,16 +39,18 @@ class PrefixLM(nn.Module):
         super(PrefixLM,self).__init__()
         assert input_resolution%patch_size==0
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=d_model, kernel_size=patch_size, stride=patch_size, bias=False)
-        self.resnet=nn.Sequential(*[nn.Sequential(ResBlock(d_model)) for _ in range(res_depth)])
+        self.resnet=nn.Sequential(*[nn.Sequential(ResBlock(d_model)) for _ in range(res_depth)])        #nn.Sequential(clone(ResBlock(d_model),res_depth))
         self.txt_embed=nn.Embedding(num_text_tokens+2,d_model)#<seg>和<eof>
         self.txt_pos_embed=nn.Embedding(txt_seq_len*2,d_model)#encoder和decoder中txt长度均为256
         self.img_tokens_len=(input_resolution // patch_size) ** 2
         self.img_pos_embed=nn.Embedding(self.img_tokens_len,d_model)
         self.txt_seq_len=txt_seq_len
         self.num_text_tokens=num_text_tokens
-        tgt_mask=subsequent_mask(self.txt_seq_len)
-        self.register_buffer('tgt_mask', tgt_mask, persistent=False)
-        self.transformer=Transformer(d_model,heads,enc_depth,dec_depth,d_ff,src_mask=None,tgt_mask=tgt_mask,dropout=dropout)
+        self.dim_embed=d_model
+        self.input_resolution=input_resolution
+        self.patch_size=patch_size
+        #self.register_buffer('tgt_mask', tgt_mask, persistent=False)
+        self.transformer=Transformer(d_model,heads,enc_depth,dec_depth,d_ff,dropout=dropout)
         self.to_logits = nn.Sequential(
             nn.LayerNorm(d_model),
             nn.Linear(d_model, self.num_text_tokens),
@@ -61,7 +63,7 @@ class PrefixLM(nn.Module):
         img_emed+=self.img_pos_embed(torch.arange(self.img_tokens_len,device=device))
         seg=torch.zeros(self.txt_seq_len,device=device,dtype=torch.long)+self.num_text_tokens+1#<seg>
         end=torch.zeros(self.txt_seq_len,device=device,dtype=torch.long)+self.num_text_tokens+2#<end>
-        l=randint(0,10)
+        l=randint(0,8)
 
         pre_txt=torch.zeros_like(txt)
         pre_txt[:,:l]=txt[:,:l]
@@ -80,7 +82,8 @@ class PrefixLM(nn.Module):
         tgt_txt_embed+=self.txt_pos_embed(torch.arange(self.txt_seq_len,device=device)+self.txt_seq_len)
 
         prefix=torch.cat((img_emed,pre_txt_embed),dim=1)
-        out=self.transformer(prefix,tgt_txt_embed)
+        tgt_mask=subsequent_mask(self.txt_seq_len).to(device)
+        out=self.transformer(prefix,tgt_txt_embed,tgt_mask=subsequent_mask(self.txt_seq_len))
         logits=self.to_logits(out)
         if not return_loss:
             return logits

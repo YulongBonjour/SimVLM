@@ -1,7 +1,7 @@
 import torch
 import copy
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn .functional as F
 import numpy as np
 import math
 #helpers
@@ -34,25 +34,25 @@ class LayerNorm(nn.Module):
         return self.a_2*(x-mean)/(std+self.eps)+self.b_2
 
 class Transformer(nn.Module):
-    def __init__(self,d_model=512,heads=8,enc_depth=8,dec_depth=8,d_ff=1024,src_mask=None,tgt_mask=None,dropout=0.1):#,src_embeded,tgt_embed,generator):
+    def __init__(self,d_model=512,heads=8,enc_depth=8,dec_depth=8,d_ff=1024,dropout=0.1)::
         super(Transformer,self).__init__()
         c=copy.deepcopy
         attn=MultiHeadedAttention(heads,d_model)
         ff=Feedforward(d_model,d_ff,dropout)
         self.encoder=Encoder(EncoderLayer(d_model,c(attn),c(ff),dropout),enc_depth)
         self.decoder=Decoder(DecoderLayer(d_model,c(attn),c(attn),c(ff),dropout),dec_depth)
-        self.register_buffer('src_mask', src_mask, persistent=False)
-        self.register_buffer('tgt_mask', tgt_mask, persistent=False)
+        #self.register_buffer('src_mask', src_mask, persistent=False)
+        #self.register_buffer('tgt_mask', tgt_mask, persistent=False)
         for p in self.parameters():
             if p.dim()>1:
                 nn.init.xavier_uniform_(p)
 
-    def forward(self,src_embeded,tgt_embeded):#,src_mask,tgt_mask):
+    def forward(self,src_embeded,tgt_embeded,src_mask=None,tgt_mask=None):
         return  self.decode(self.encode(src_embeded),tgt_embeded)
-    def encode(self,src_embeded):#,src_mask):
-        return self.encoder(src_embeded,self.src_mask)
-    def decode(self,memory,tgt_embeded):
-        return self.decoder(tgt_embeded,memory,self.src_mask,self.tgt_mask)
+    def encode(self,src_embeded,src_mask=None):
+        return self.encoder(src_embeded,src_mask)
+    def decode(self,memory,tgt_embeded,src_mask=None,tgt_mask=None):
+        return self.decoder(tgt_embeded,memory,src_mask,tgt_mask)
 
 class Generator(nn.Module):
     def __init__(self,d_model,vocab):
