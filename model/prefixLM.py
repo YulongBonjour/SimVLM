@@ -77,7 +77,7 @@ class PrefixLM(nn.Module):
         pre_txt_embed=self.txt_embed(pre_txt)
         pre_txt_embed+=self.txt_pos_embed(torch.arange(self.txt_seq_len,device=device))
         tgt_txt_embed=self.txt_embed(tgt_txt)
-        tgt_txt_embed+=self.txt_pos_embed(torch.arange(self.txt_seq_len,device=device)+256)
+        tgt_txt_embed+=self.txt_pos_embed(torch.arange(self.txt_seq_len,device=device)+self.txt_seq_len)
 
         prefix=torch.cat((img_emed,pre_txt_embed),dim=1)
         out=self.transformer(prefix,tgt_txt_embed)
