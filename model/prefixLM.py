@@ -61,12 +61,12 @@ class PrefixLM(nn.Module):
         img_emed+=self.img_pos_embed(torch.arange(self.img_tokens_len,device=device))
         seg=torch.zeros(self.txt_seq_len,device=device,dtype=torch.long)+self.num_text_tokens+1#<seg>
         end=torch.zeros(self.txt_seq_len,device=device,dtype=torch.long)+self.num_text_tokens+2#<end>
-        l=randint(4,15)
+        l=randint(0,10)
 
         pre_txt=torch.zeros_like(txt)
         pre_txt[:,:l]=txt[:,:l]
         tgt_txt=torch.zeros_like(txt)
-        tgt_txt[:,l:]=txt[:,l:]
+        tgt_txt[:,:(self.txt_seq_len-l)]=txt[:,l:]
         del txt,img
         pre_txt=torch.where(pre_txt==0,seg,pre_txt)
         tgt_txt=torch.where(tgt_txt==0,end,tgt_txt)
