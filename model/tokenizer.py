@@ -4,7 +4,7 @@
 import torch
 
 
-from transformers import BertTokenizer
+# from transformers import BertTokenizer
 
 import html
 import os
@@ -52,12 +52,11 @@ def whitespace_clean(text):
 
 
 # chinese tokenizer
-
 class ChineseTokenizer:
     def __init__(self):
-        tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
+        tokenizer = torch.load('./model/Chinese_tokenizer.pth') # BertTokenizer.from_pretrained('bert-base-chinese')
         self.tokenizer = tokenizer
-        self.vocab_size = tokenizer.vocab_size
+        self.vocab_size = tokenizer.vocab_size+2
 
     def decode(self, tokens):
         if torch.is_tensor(tokens):
@@ -66,14 +65,19 @@ class ChineseTokenizer:
         tokens = [token for token in tokens if token not in (0,)]
         return self.tokenizer.decode(tokens)
 
-    def encode(self, text):
-        return torch.tensor(self.tokenizer.encode(text, add_special_tokens = False))
+    def encode(self, text,train=False):
+        t=torch.tensor(self.tokenizer.encode(text, add_special_tokens=False))
+        if train:
+            return  torch.cat([t,torch.tensor([5])],dim=-1)
+        else:
+            return t
+        #special token: [CLS]==4,[SEP]==5, [PAD]==0,<bos>=7
 
-    def tokenize(self, texts, context_length = 256, truncate_text = False):
+    def tokenize(self, texts, context_length = 77, truncate_text = False,train=True):
         if isinstance(texts, str):
             texts = [texts]
 
-        all_tokens = [self.encode(text) for text in texts]
+        all_tokens = [self.encode(text,train=train) for text in texts]
 
         result = torch.zeros(len(all_tokens), context_length, dtype=torch.long)
         for i, tokens in enumerate(all_tokens):
