@@ -68,8 +68,8 @@ class PrefixLM(nn.Module):
         tgt_txt=torch.zeros((n,self.target_txt_len),device=device,dtype=torch.long)
         tgt_txt[:,:(self.txt_seq_len-l)]=txt[:,l:]
         del txt,img
-
-        tgt_txt= F.pad(tgt_txt, (1, 0), value = 4)#add<CLS>
+        #add<CLS>, if you change the tokenizer, don't forget  to change the token ID. another [SEP] token is added at the ending(in the tokenizer.py,please check.)
+        tgt_txt= F.pad(tgt_txt, (1, 0), value = 4)
         labels=tgt_txt[:,1:]
         tgt_txt=tgt_txt[:,:-1]#
 
