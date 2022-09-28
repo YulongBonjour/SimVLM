@@ -43,7 +43,7 @@ def generate_caption(model, image_tensor, tokenized_text):
     #logits=logits[:,:-26]
     sample = torch.argmax(logits, dim=-1)
     cur_len = 1
-    while (cur_len < model.target_txt_len):
+    while (cur_len < model.target_txt_len and sample!=5):
         tgt_txt = torch.cat((tgt_txt, sample.unsqueeze(1)), dim=-1)
         tgt_txt_embed = model.txt_embed(tgt_txt)
         cur_len += 1
