@@ -3,3 +3,5 @@ einops
 torch
 numpy
 transformers
+pathlib
+regex
