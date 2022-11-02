@@ -1,5 +1,5 @@
 # SimVLM
-pytorch implementation for SimVLM ---SIMPLE VISUAL LANGUAGE MODEL PRETRAINING WITH WEAK SUPERVISION
+unofficial pytorch implementation for SimVLM ---SIMPLE VISUAL LANGUAGE MODEL PRETRAINING WITH WEAK SUPERVISION
 https://arxiv.org/abs/2108.10904
 
 The tokenizer used in current codes is ChineseTokenzier, if you change it to anther tokenizer, some modifications are needed.
