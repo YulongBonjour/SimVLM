@@ -3,7 +3,8 @@ unofficial pytorch implementation for SimVLM ---SIMPLE VISUAL LANGUAGE MODEL PRE
 https://arxiv.org/abs/2108.10904
 
 The tokenizer used in current codes is ChineseTokenzier, if you change it to anther tokenizer, some modifications are needed.
-* nucleus sampling, random sampling, and greedy samping are available.
+* Nucleus sampling, random sampling, and greedy samping are available.
+* I would be apprecaited for any Feedback. 
 # datasets format
     for 'loader.py' ,we use lmdb datasets
     for 'loader_ori.py', the format of dataset is like this:
