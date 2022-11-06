@@ -1,6 +1,6 @@
 import torch
 import torch.distributed as dist
-from model import ChineseTokenizer,PrefixLM
+from model import ChineseTokenizer,SimVLM
 import argparse
 from torch.utils.data import DataLoader
 from loader import TextImageDataset
@@ -133,7 +133,7 @@ if not RESUME:
                         d_ff=args.d_ff,
                         dropout=args.dropout)
 
-model=PrefixLM(**PrefixLM_configure)
+model=SimVLM(**PrefixLM_configure)
 if RESUME:
      model.load_state_dict(weights)
 model.cuda(args.local_rank)
