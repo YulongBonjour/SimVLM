@@ -134,7 +134,13 @@ if not RESUME:
                         dec_depth=args.dec_depth,
                         res_depth=args.res_depth,
                         d_ff=args.d_ff,
-                        dropout=args.dropout)
+                        dropout=args.dropout,
+                        prefix_txt_len=args.prefix_txt_len,
+                        target_txt_len=args.target_txt_len,
+                        max_trunc_txt_len=args.max_trunc_txt_len,
+                        activation="relu",
+                        pad_idx=0,
+                             )
 
 model=SimVLM(**PrefixLM_configure)
 if RESUME:
